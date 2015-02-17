@@ -28,4 +28,9 @@ describe 'it runs' do
     EOF
   end # === it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
 
+  it "turns text into links: *my link* google.com" do
+    text = Slash_Star_Link.new "This is *my link* google.com."
+    text.to_html.should == "This is <a href=\"http://google.com\">my link</a>."
+  end
+
 end # === describe 'it runs'

@@ -10,7 +10,15 @@ class Slash_Star_Link
 
   def to_html
     @origin.
-      gsub(/([\/\*\-]{1,2})([^\1]+)(\1|\-\*)/) { |full, match|
+      gsub(/\*([^\*]+)\*\s+([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])/) { |full, match|
+      text = $1
+      link = $2
+      unless link =~ /:\/\//i
+        link = "http://#{link}"
+      end
+      "<a href=\"#{link}\">#{text}</a>"
+    }.
+    gsub(/([\*\/\-]{1,2})([^\1\<\>]+)(\1|\-\*)/) { |full, match|
       case
       when $1 == $3 && $1 == '/'
         "<i>#{$2}</i>"
