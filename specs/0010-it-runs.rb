@@ -33,4 +33,14 @@ describe 'it runs' do
     text.to_html.should == "This is <a href=\"http://google.com\">my link</a>."
   end
 
+  it "turns only text with a period inside to links: text. vs my.text." do
+    text = Slash_Star_Link.new "This is *bold* text. This is my *link* lewrockwell.com."
+    text.to_html.should == "This is <strong>bold</strong> text. This is my <a href=\"http://lewrockwell.com\">link</a>."
+  end
+
+  it "does not create invalid links: javascript://alert('text.text')" do
+    text = Slash_Star_Link.new "This is my *link* javascript://alert('text.text')."
+    text.to_html['href'].should.not == 'href'
+  end
+
 end # === describe 'it runs'
