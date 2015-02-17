@@ -19,13 +19,13 @@ describe 'it runs' do
     EOF
   end # === it turns star-ed text to strong: *bold* <strong>bold</strong>
 
-  it "turns dash-dash-ed text to strong: --strike-- <strike>strike</strike>" do
+  it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
     text = Slash_Star_Link.new(<<-EOF)
-      This is my --old-- text.
+      This is my *-old-* text.
     EOF
     text.to_html.strip.should == <<-EOF.strip
-      This is my <strike>old</strike> text.
+      This is my <del>old</del> text.
     EOF
-  end # === it "turns dash-dash-ed text to strong: --strike-- <strike>strike</strike>" do
+  end # === it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
 
 end # === describe 'it runs'
