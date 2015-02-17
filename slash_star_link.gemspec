@@ -7,9 +7,10 @@ Gem::Specification.new do |spec|
   spec.version       = `cat VERSION`
   spec.authors       = ["da99"]
   spec.email         = ["i-hate-spam-1234567@mailinator.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
+  spec.summary       = %q{My alternative to markdown for morons.}
   spec.description   = %q{
-    TODO: Write a longer description. Optional.
+    Provides italics, strikes, bold, and links.
+    Nothing else.
   }
   spec.homepage      = "https://github.com/da99/slash_star_link"
   spec.license       = "MIT"
