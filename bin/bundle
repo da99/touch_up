@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# -*- bash -*-
+#
+set -u -e -o pipefail
+
+export PATH="/progs/ruby/current/bin:$PATH"
+bundle "$@"
