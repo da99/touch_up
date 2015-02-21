@@ -43,4 +43,24 @@ describe 'it runs' do
     text.to_html['href'].should.not == 'href'
   end
 
+  it "ignores ending punctuation: .com." do
+    text = Slash_Star_Link.new "This is *my link* google.com."
+    text.to_html.should == "This is <a href=\"http://google.com\">my link</a>."
+  end
+
+  it "ignores ending punctuation: .com?" do
+    text = Slash_Star_Link.new "Is it this google.com?"
+    text.to_html.should == "Is it this <a href=\"http://google.com\">google.com</a>?"
+  end
+
+  it "ignores ending punctuation: .com!" do
+    text = Slash_Star_Link.new "Yes google.com!"
+    text.to_html.should == "Yes <a href=\"http://google.com\">google.com</a>!"
+  end
+
+  it "allows a ? in the url, but ignores ending punctuation: my.website.com/?image?" do
+    text = Slash_Star_Link.new "Yes my.website.com/?image? Yes."
+    text.to_html.should == "Yes <a href=\"http://my.website.com/?image\">my.website.com/?image</a>? Yes."
+  end
+
 end # === describe 'it runs'
