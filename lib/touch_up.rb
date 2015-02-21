@@ -1,5 +1,5 @@
 
-class Slash_Star_Link
+class Touch_Up
 
   class << self
   end # === class self ===
@@ -32,4 +32,4 @@ class Slash_Star_Link
     }
   end
 
-end # === class Slash_Star_Link ===
+end # === class Touch_Up ===
