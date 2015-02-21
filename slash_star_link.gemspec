@@ -3,7 +3,7 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
-  spec.name          = "slash_star_link"
+  spec.name          = "touch_up"
   spec.version       = `cat VERSION`
   spec.authors       = ["da99"]
   spec.email         = ["i-hate-spam-1234567@mailinator.com"]
@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
     Provides italics, strikes, bold, and links.
     Nothing else.
   }
-  spec.homepage      = "https://github.com/da99/slash_star_link"
+  spec.homepage      = "https://github.com/da99/touch_up"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |file|

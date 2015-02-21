@@ -5,7 +5,7 @@ I have no idea.
 
 ## Installation
 
-    gem 'slash_star_link'
+    gem 'touch_up'
 
 ## Usage
 

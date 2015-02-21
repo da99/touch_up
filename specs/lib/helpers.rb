@@ -1,4 +1,4 @@
 
 require 'Bacon_Colored'
-require 'slash_star_link'
+require 'touch_up'
 require 'pry'
