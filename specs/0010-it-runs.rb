@@ -28,6 +28,10 @@ describe 'it runs' do
     EOF
   end # === it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
 
+end # === describe 'it runs'
+
+describe "linking" do
+
   it "turns text into links: *my link* google.com" do
     text = Touch_Up.new "This is *my link* google.com."
     text.to_html.should == "This is <a href=\"http://google.com\">my link</a>."
@@ -63,4 +67,9 @@ describe 'it runs' do
     text.to_html.should == "Yes <a href=\"http://my.website.com/?image\">my.website.com/?image</a>? Yes."
   end
 
-end # === describe 'it runs'
+  it "does not auto-link links in anchor tags: <a href=\"...\">..." do
+    text = Touch_Up.new "*my* google.com. another.link."
+    text.to_html.should == "<a href=\"http://google.com\">my</a>. <a href=\"http://another.link\">another.link</a>."
+  end
+
+end # === describe "linking"

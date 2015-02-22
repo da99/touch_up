@@ -1,5 +1,11 @@
 
+require 'twitter-text'
+
 class Touch_Up
+
+  NOTHING = ''.freeze
+
+  include Twitter::Extractor
 
   class << self
   end # === class self ===
@@ -10,15 +16,40 @@ class Touch_Up
 
   def to_html
     @origin.
-      gsub(/\*([^\*]+)\*\s+([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])/) { |full, match|
-      text = $1
-      link = $2
-      unless link =~ /:\/\//i
-        link = "http://#{link}"
+
+      # "a" (anchor) tags, auto-linking
+      gsub(%r@(\*([^\*]+)\*\s+)?([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])@) { |full, match|
+      text = $2
+      raw_link = $3
+
+      link = extract_urls(raw_link).first
+
+      if !link
+        full
+      else
+
+        append = raw_link.sub(link, NOTHING)
+
+        short_link = link
+
+        if !link['://']
+          link = 'http://' + link
+        end
+
+        if text
+          "<a href=\"#{link}\">#{text}</a>#{append}"
+        else
+          "<a href=\"#{link}\">#{short_link}</a>#{append}"
+        end
+
       end
-      "<a href=\"#{link}\">#{text}</a>"
+
+
     }.
-    gsub(/([\*\/\-]{1,2})([^\1\<\>]+)(\1|\-\*)/) { |full, match|
+
+
+    # "i", "del", "strong" tags
+    gsub(/(?<=\s)([\*\/\-]{1,2})([^\1\<\>]+)(\1|\-\*)(?=\s)/) { |full, match|
       case
       when $1 == $3 && $1 == '/'
         "<i>#{$2}</i>"
@@ -30,6 +61,7 @@ class Touch_Up
         full
       end
     }
+
   end
 
 end # === class Touch_Up ===
