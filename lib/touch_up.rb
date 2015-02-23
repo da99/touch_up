@@ -1,4 +1,5 @@
 
+require 'escape_escape_escape'
 require 'twitter-text'
 
 class Touch_Up
@@ -36,13 +37,20 @@ class Touch_Up
           link = 'http://' + link
         end
 
-        if text
-          "<a href=\"#{link}\">#{text}</a>#{append}"
-        else
-          "<a href=\"#{link}\">#{short_link}</a>#{append}"
-        end
+        begin
+          link = Escape_Escape_Escape.href(link)
 
-      end
+          if text
+            "<a href=\"#{link}\">#{text}</a>#{append}"
+          else
+            "<a href=\"#{link}\">#{short_link}</a>#{append}"
+          end
+
+        rescue Escape_Escape_Escape::Invalid_HREF
+          full
+        end # begin
+
+      end # if
 
 
     }.
