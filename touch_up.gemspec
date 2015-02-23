@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "Bacon_Colored" , "~> 0.1"
 
   spec.add_dependency "twitter-text" , ">= 1.11.0"
+  spec.add_dependency "escape_escape_escape" , "> 1.4.0"
 end

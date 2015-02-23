@@ -72,4 +72,6 @@ describe "linking" do
     text.to_html.should == "<a href=\"http://google.com\">my</a>. <a href=\"http://another.link\">another.link</a>."
   end
 
+  it "does not auto-link invalid urls: http://www.yahoo.com/&"
+
 end # === describe "linking"
