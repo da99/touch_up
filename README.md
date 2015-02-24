@@ -1,5 +1,5 @@
 
-# Touch_Up
+# Touch\_Up
 
 I have no idea.
 
@@ -9,4 +9,12 @@ I have no idea.
 
 ## Usage
 
-No coming any time soon.
+
+      require 'touch_up'
+
+      puts Touch_Up.new(<<-EOF).to_html
+        This is /slanted/.
+        This is *strong*.
+        This is *my link* www.megauni.com.
+        This is lovefm.co.jp.
+      EOF
