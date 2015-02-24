@@ -35,23 +35,23 @@ describe "strong" do
 
 end # === describe "strong"
 
-describe "star-dash" do
+describe "strikethrough" do
 
-  it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
+  it "turns strikethrough text to :del: ~~del~~ <del>del</del>" do
     text = Touch_Up.new(<<-EOF)
-      This is my *-old-* text.
+      This is my ~~old~~ text.
     EOF
     text.to_html.strip.should == <<-EOF.strip
       This is my <del>old</del> text.
     EOF
-  end # === it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
+  end # === it "turns strikethrough-ed text to strong: ~~del~~ <del>del</del>" do
 
-  it "leaves surrounding chars alone: I am re*-deleted-*ed." do
-    Touch_Up.new("I am re*-deleted-*ed.").
+  it "leaves surrounding chars alone: I am re~~deleted~~ed." do
+    Touch_Up.new("I am re~~deleted~~ed.").
       to_html.should == "I am re<del>deleted</del>ed."
   end
 
-end # === describe "star-dash"
+end # === describe "strikethrough"
 
 describe "linking" do
 
