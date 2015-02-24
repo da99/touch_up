@@ -1,7 +1,9 @@
 
 # Touch\_Up
 
-I have no idea.
+My mini-alternative to markdown.
+It uses `Regexp` (I know, I know)
+  and is most likely useless for your needs.
 
 ## Installation
 
