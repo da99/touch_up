@@ -1,5 +1,5 @@
 
-describe 'it runs' do
+describe 'italics' do
 
   it "turns slash-ed text into italics: /slash/ <i>slash</i>" do
     text = Touch_Up.new(<<-EOF)
@@ -10,6 +10,15 @@ describe 'it runs' do
     EOF
   end # === it turns slash-ed text into italics: /slash/ <i>slash</i>
 
+  it "leaves surrounding chars alone: I am super-/slanted/." do
+    Touch_Up.new("I am super-/slanted/.").
+      to_html.should == "I am super-<i>slanted</i>."
+  end
+
+end # === describe 'italics'
+
+describe "strong" do
+
   it "turns star-ed text to strong: *bold* <strong>bold</strong>" do
     text = Touch_Up.new(<<-EOF)
       This is my brave and *bold* text.
@@ -18,6 +27,15 @@ describe 'it runs' do
       This is my brave and <strong>bold</strong> text.
     EOF
   end # === it turns star-ed text to strong: *bold* <strong>bold</strong>
+
+  it "leaves surrounding chars alone: I am super-*strong*." do
+    Touch_Up.new("I am super*strong*.").
+      to_html.should == "I am super<strong>strong</strong>."
+  end
+
+end # === describe "strong"
+
+describe "star-dash" do
 
   it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
     text = Touch_Up.new(<<-EOF)
@@ -28,7 +46,12 @@ describe 'it runs' do
     EOF
   end # === it "turns star-dash-ed text to strong: *-del-* <del>del</del>" do
 
-end # === describe 'it runs'
+  it "leaves surrounding chars alone: I am re*-deleted-*ed." do
+    Touch_Up.new("I am re*-deleted-*ed.").
+      to_html.should == "I am re<del>deleted</del>ed."
+  end
+
+end # === describe "star-dash"
 
 describe "linking" do
 
