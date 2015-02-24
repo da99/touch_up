@@ -64,7 +64,7 @@ describe "linking" do
 
   it "allows a ? in the url, but ignores ending punctuation: my.website.com/?image?" do
     text = Touch_Up.new "Yes my.website.com/?image? Yes."
-    text.to_html.should == "Yes <a href=\"http:&#47;&#47;my.website.com&#47;?image\">my.website.com/?image</a>? Yes."
+    text.to_html.should == "Yes <a href=\"http:&#47;&#47;my.website.com&#47;?image\">my.website.com&#47;?image</a>? Yes."
   end
 
   it "does not auto-link links in anchor tags: <a href=\"...\">..." do
@@ -75,7 +75,20 @@ describe "linking" do
   it "does not auto-link invalid urls: http://www.yahoo.com/&" do
     txt = "This is invalid: http://кц.рф"
     Touch_Up.new(txt).
-    to_html.should == txt
+      to_html.should == txt
+  end
+
+  it "does not double-escape hrefs" do
+    href = Escape_Escape_Escape.href "http://www.google.com/"
+    txt  = %^my link #{href}^
+    Touch_Up.new(txt).
+      to_html.should == %^my link <a href="#{href}">#{href}</a>^
+  end
+
+  it "escapes content for anchor tags" do
+    href="www.google.com/?text=text&more=more"
+    Touch_Up.new("my link #{href}").
+      to_html.should == %^my link <a href="#{Escape_Escape_Escape.href 'http://' + href}">#{Escape_Escape_Escape.href href}</a>^
   end
 
 end # === describe "linking"

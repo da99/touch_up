@@ -20,8 +20,9 @@ class Touch_Up
 
       # "a" (anchor) tags, auto-linking
       gsub(%r@(\*([^\*]+)\*\s+)?([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])@) { |full, match|
+
       text = $2
-      raw_link = $3
+      raw_link = Escape_Escape_Escape.decode_html($3)
 
       link = extract_urls(raw_link).first
 
@@ -29,21 +30,21 @@ class Touch_Up
         full
       else
 
-        append = raw_link.sub(link, NOTHING)
-
-        short_link = link
+        append           = raw_link.sub(link, NOTHING)
+        short_link       = link
+        clean_short_link = Escape_Escape_Escape.html(short_link)
 
         if !link['://']
           link = 'http://' + link
         end
 
         begin
-          link = Escape_Escape_Escape.href(link)
+          clean_link = Escape_Escape_Escape.href(link)
 
           if text
-            "<a href=\"#{link}\">#{text}</a>#{append}"
+            "<a href=\"#{clean_link}\">#{text}</a>#{append}"
           else
-            "<a href=\"#{link}\">#{short_link}</a>#{append}"
+            "<a href=\"#{clean_link}\">#{clean_short_link}</a>#{append}"
           end
 
         rescue Escape_Escape_Escape::Invalid_HREF
