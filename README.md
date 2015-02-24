@@ -10,11 +10,13 @@ I have no idea.
 ## Usage
 
 
-      require 'touch_up'
+```ruby
+require 'touch_up'
 
-      puts Touch_Up.new(<<-EOF).to_html
-        This is /slanted/.
-        This is *strong*.
-        This is *my link* www.megauni.com.
-        This is lovefm.co.jp.
-      EOF
+puts Touch_Up.new(<<-EOF).to_html
+  This is /slanted/.
+  This is *strong*.
+  This is *my link* www.megauni.com.
+  This is lovefm.co.jp.
+EOF
+```
