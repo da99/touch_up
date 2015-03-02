@@ -21,7 +21,7 @@ class Touch_Up
       # "a" (anchor) tags, auto-linking
       gsub(%r@(\*([^\*]+)\*\s+)?([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])@) { |full, match|
 
-      raw_text   = Escape_Escape_Escape.decode_html $2
+      raw_text   = $2 ? Escape_Escape_Escape.decode_html($2) : nil
       raw_append = Escape_Escape_Escape.decode_html $3
       raw_link   = extract_urls(raw_append).first
 

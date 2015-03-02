@@ -17,7 +17,7 @@ describe "strong" do
 
   it "turns star-ed text to strong: *bold* <strong>bold</strong>" do
     Touch_Up.new("This is my brave and *bold* text.").
-      to_html.strip.should == Escape_Escape_Escape.html(<<-EOF.strip)
+      to_html.strip.should == <<-EOF.strip
       This is my brave and <strong>bold</strong> text.
     EOF
   end # === it turns star-ed text to strong: *bold* <strong>bold</strong>
@@ -33,7 +33,7 @@ describe "strikethrough" do
 
   it "turns strikethrough text to :del: ~~del~~ <del>del</del>" do
     Touch_Up.new("This is my ~~old~~ text.").
-      to_html.strip.should == Escape_Escape_Escape.html("This is my <del>old</del> text.")
+      to_html.strip.should == "This is my <del>old</del> text."
   end # === it "turns strikethrough-ed text to strong: ~~del~~ <del>del</del>" do
 
   it "leaves surrounding chars alone: I am re~~deleted~~ed." do
@@ -52,16 +52,18 @@ describe "linking" do
   end
 
   it "turns only text with a period inside to links: text. vs my.text." do
+    link  = "lewrockwell.com"
+    clean = Escape_Escape_Escape.href "http://#{link}"
     Touch_Up.new(
-      "This is *bold* text. This is my *link* lewrockwell.com."
-    ).to_html.should == Escape_Escape_Escape.html(
-      "This is <strong>bold</strong> text. This is my <a href=\"http://lewrockwell.com\">link</a>."
-    )
+      "This is *bold* text. This is my *link* #{link}."
+    ).to_html.should ==
+      "This is <strong>bold</strong> text. This is my <a href=\"#{clean}\">link</a>."
   end
 
   it "does not create invalid links: javascript://alert('text.text')" do
-    Touch_Up.new("This is my *link* javascript://alert('text.text').").
-    to_html.should == "This is my <strong>link</strong> javascript://alert('text.text')."
+    link = "javascript://alert('text.text')"
+    Touch_Up.new("This is my *link* #{link}.").
+    to_html.should == "This is my <strong>link</strong> #{Escape_Escape_Escape.html link}."
   end
 
   it "ignores ending punctuation: .com." do
