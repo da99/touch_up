@@ -3,12 +3,12 @@ describe 'italics' do
 
   it "turns slash-ed text into italics: /slash/ <i>slash</i>" do
     Touch_Up.new("This is my /slash/ text.").
-      to_html.strip.should == Escape_Escape_Escape.html("This is my <i>slash</i> text.")
+      to_html.strip.should == "This is my <i>slash</i> text."
   end # === it turns slash-ed text into italics: /slash/ <i>slash</i>
 
   it "leaves surrounding chars alone: I am super-/slanted/." do
     Touch_Up.new("I am super-/slanted/.").
-      to_html.should == Escape_Escape_Escape.html("I am super-<i>slanted</i>.")
+      to_html.should == "I am super-<i>slanted</i>."
   end
 
 end # === describe 'italics'
@@ -24,9 +24,7 @@ describe "strong" do
 
   it "leaves surrounding chars alone: I am super-*strong*." do
     Touch_Up.new("I am super*strong*.").
-      to_html.should == Escape_Escape_Escape.html(
-        "I am super<strong>strong</strong>."
-    )
+      to_html.should == "I am super<strong>strong</strong>."
   end
 
 end # === describe "strong"
@@ -40,7 +38,7 @@ describe "strikethrough" do
 
   it "leaves surrounding chars alone: I am re~~deleted~~ed." do
     Touch_Up.new("I am re~~deleted~~ed.").
-      to_html.should == Escape_Escape_Escape.html("I am re<del>deleted</del>ed.")
+      to_html.should == "I am re<del>deleted</del>ed."
   end
 
 end # === describe "strikethrough"
@@ -48,10 +46,9 @@ end # === describe "strikethrough"
 describe "linking" do
 
   it "turns text into links: *my link* google.com" do
-    Touch_Up.new("This is *my link* google.com.").
-      to_html.should == Escape_Escape_Escape.html(
-        "This is <a href=\"http://google.com\">my link</a>."
-    )
+    href="google.com"
+    Touch_Up.new("This is *my link* #{href}.").
+      to_html.should == "This is <a href=\"#{Escape_Escape_Escape.href "http://#{href}"}\">my link</a>."
   end
 
   it "turns only text with a period inside to links: text. vs my.text." do
