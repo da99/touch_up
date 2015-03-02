@@ -16,7 +16,7 @@ class Touch_Up
   end
 
   def to_html
-    @origin.
+    Escape_Escape_Escape.html Escape_Escape_Escape.decode_html(@origin).
 
       # "a" (anchor) tags, auto-linking
       gsub(%r@(\*([^\*]+)\*\s+)?([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])@) { |full, match|
