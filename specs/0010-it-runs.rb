@@ -2,17 +2,13 @@
 describe 'italics' do
 
   it "turns slash-ed text into italics: /slash/ <i>slash</i>" do
-    text = Touch_Up.new(<<-EOF)
-      This is my /slash/ text.
-    EOF
-    text.to_html.strip.should == <<-EOF.strip
-      This is my <i>slash</i> text.
-    EOF
+    Touch_Up.new("This is my /slash/ text.").
+      to_html.strip.should == Escape_Escape_Escape.html("This is my <i>slash</i> text.")
   end # === it turns slash-ed text into italics: /slash/ <i>slash</i>
 
   it "leaves surrounding chars alone: I am super-/slanted/." do
     Touch_Up.new("I am super-/slanted/.").
-      to_html.should == "I am super-<i>slanted</i>."
+      to_html.should == Escape_Escape_Escape.html("I am super-<i>slanted</i>.")
   end
 
 end # === describe 'italics'
@@ -20,17 +16,17 @@ end # === describe 'italics'
 describe "strong" do
 
   it "turns star-ed text to strong: *bold* <strong>bold</strong>" do
-    text = Touch_Up.new(<<-EOF)
-      This is my brave and *bold* text.
-    EOF
-    text.to_html.strip.should == <<-EOF.strip
+    Touch_Up.new("This is my brave and *bold* text.").
+      to_html.strip.should == Escape_Escape_Escape.html(<<-EOF.strip)
       This is my brave and <strong>bold</strong> text.
     EOF
   end # === it turns star-ed text to strong: *bold* <strong>bold</strong>
 
   it "leaves surrounding chars alone: I am super-*strong*." do
     Touch_Up.new("I am super*strong*.").
-      to_html.should == "I am super<strong>strong</strong>."
+      to_html.should == Escape_Escape_Escape.html(
+        "I am super<strong>strong</strong>."
+    )
   end
 
 end # === describe "strong"
@@ -38,17 +34,13 @@ end # === describe "strong"
 describe "strikethrough" do
 
   it "turns strikethrough text to :del: ~~del~~ <del>del</del>" do
-    text = Touch_Up.new(<<-EOF)
-      This is my ~~old~~ text.
-    EOF
-    text.to_html.strip.should == <<-EOF.strip
-      This is my <del>old</del> text.
-    EOF
+    Touch_Up.new("This is my ~~old~~ text.").
+      to_html.strip.should == Escape_Escape_Escape.html("This is my <del>old</del> text.")
   end # === it "turns strikethrough-ed text to strong: ~~del~~ <del>del</del>" do
 
   it "leaves surrounding chars alone: I am re~~deleted~~ed." do
     Touch_Up.new("I am re~~deleted~~ed.").
-      to_html.should == "I am re<del>deleted</del>ed."
+      to_html.should == Escape_Escape_Escape.html("I am re<del>deleted</del>ed.")
   end
 
 end # === describe "strikethrough"
@@ -56,13 +48,18 @@ end # === describe "strikethrough"
 describe "linking" do
 
   it "turns text into links: *my link* google.com" do
-    text = Touch_Up.new "This is *my link* google.com."
-    text.to_html.should == "This is <a href=\"http:&#47;&#47;google.com\">my link</a>."
+    Touch_Up.new("This is *my link* google.com.").
+      to_html.should == Escape_Escape_Escape.html(
+        "This is <a href=\"http://google.com\">my link</a>."
+    )
   end
 
   it "turns only text with a period inside to links: text. vs my.text." do
-    text = Touch_Up.new "This is *bold* text. This is my *link* lewrockwell.com."
-    text.to_html.should == "This is <strong>bold</strong> text. This is my <a href=\"http:&#47;&#47;lewrockwell.com\">link</a>."
+    Touch_Up.new(
+      "This is *bold* text. This is my *link* lewrockwell.com."
+    ).to_html.should == Escape_Escape_Escape.html(
+      "This is <strong>bold</strong> text. This is my <a href=\"http://lewrockwell.com\">link</a>."
+    )
   end
 
   it "does not create invalid links: javascript://alert('text.text')" do

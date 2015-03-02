@@ -16,36 +16,36 @@ class Touch_Up
   end
 
   def to_html
-    Escape_Escape_Escape.html Escape_Escape_Escape.decode_html(@origin).
+    Escape_Escape_Escape.html(@origin).
 
       # "a" (anchor) tags, auto-linking
       gsub(%r@(\*([^\*]+)\*\s+)?([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])@) { |full, match|
 
-      text = $2
-      raw_link = Escape_Escape_Escape.decode_html($3)
+      raw_text   = Escape_Escape_Escape.decode_html $2
+      raw_append = Escape_Escape_Escape.decode_html $3
+      raw_link   = extract_urls(raw_append).first
 
-      link = extract_urls(raw_link).first
-
-      if !link
+      if !raw_link
         full
       else
 
-        append           = raw_link.sub(link, NOTHING)
-        short_link       = link
-        clean_short_link = Escape_Escape_Escape.html(short_link)
+        append   = Escape_Escape_Escape.html raw_append.sub(raw_link, NOTHING)
+        text     = if raw_text
+                   Escape_Escape_Escape.html(raw_text)
+                 else
+                   Escape_Escape_Escape.html(raw_link)
+                 end
 
-        if !link['://']
-          link = 'http://' + link
+        raw_link = Escape_Escape_Escape.decode_html(raw_link)
+
+        if !raw_link['://']
+          raw_link = 'http://' + raw_link
         end
 
         begin
-          clean_link = Escape_Escape_Escape.href(link)
+          link = Escape_Escape_Escape.href(raw_link)
 
-          if text
-            "<a href=\"#{clean_link}\">#{text}</a>#{append}"
-          else
-            "<a href=\"#{clean_link}\">#{clean_short_link}</a>#{append}"
-          end
+          "<a href=\"#{link}\">#{text}</a>#{append}"
 
         rescue Escape_Escape_Escape::Invalid_HREF
           full
