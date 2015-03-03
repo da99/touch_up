@@ -4,7 +4,9 @@ require 'twitter-text'
 
 class Touch_Up
 
-  NOTHING = ''.freeze
+  NOTHING    = ''.freeze
+  HREFS      = %r@(\*([^\*]+)\*\s+)?([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])@
+  MARK_DOWNS = /(\&\#47\;|~~|\*)([^\1\<\>]+)(\1)/
 
   include Twitter::Extractor
 
@@ -16,10 +18,7 @@ class Touch_Up
   end
 
   def to_html
-    Escape_Escape_Escape.html(@origin).
-
-      # "a" (anchor) tags, auto-linking
-      gsub(%r@(\*([^\*]+)\*\s+)?([^\.\s]+\.[^\.\s]+[^\s]+[^\.\s])@) { |full, match|
+    splits = Escape_Escape_Escape.html(@origin).gsub(HREFS) { |full, match|
 
       raw_text   = $2 ? Escape_Escape_Escape.decode_html($2) : nil
       raw_append = Escape_Escape_Escape.decode_html $3
@@ -31,10 +30,10 @@ class Touch_Up
 
         append   = Escape_Escape_Escape.html raw_append.sub(raw_link, NOTHING)
         text     = if raw_text
-                   Escape_Escape_Escape.html(raw_text)
-                 else
-                   Escape_Escape_Escape.html(raw_link)
-                 end
+                     Escape_Escape_Escape.html(raw_text)
+                   else
+                     Escape_Escape_Escape.html(raw_link)
+                   end
 
         raw_link = Escape_Escape_Escape.decode_html(raw_link)
 
@@ -54,22 +53,33 @@ class Touch_Up
       end # if
 
 
-    }.
-
+    }.split(/(\<[^\>]+\>[^\<]+\<\/[^\>]+\>)/)
 
     # "i", "del", "strong" tags
-    gsub(/(\&\#47\;|~~|\*)([^\1\<\>]+)(\1)/) { |full, match|
-      case
-      when $1 == $3 && $1 == '&#47;'
-        "<i>#{$2}</i>"
-      when $1 == '~~' && $3 == '~~'
-        "<del>#{$2}</del>"
-      when $1 == $3 && $1 == '*'
-        "<strong>#{$2}</strong>"
-      else
-        full
+    final = ""
+    i = 0
+    while i < splits.size
+      final << (splits[i].gsub(MARK_DOWNS) { |full, match|
+        case
+        when $1 == $3 && $1 == '&#47;'
+          "<i>#{$2}</i>"
+        when $1 == '~~' && $3 == '~~'
+          "<del>#{$2}</del>"
+        when $1 == $3 && $1 == '*'
+          "<strong>#{$2}</strong>"
+        else
+          full
+        end
+      })
+
+      i += 1
+      if splits[i]
+        final << splits[i]
+        i += 1
       end
-    }
+    end
+
+    final
 
   end
 

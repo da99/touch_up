@@ -94,7 +94,7 @@ describe "linking" do
   it "does not auto-link invalid urls: http://www.yahoo.com/&" do
     txt = "This is invalid: http://кц.рф"
     Touch_Up.new(txt).
-      to_html.should == txt
+      to_html.should == Escape_Escape_Escape.html(txt)
   end
 
   it "does not double-escape hrefs" do
